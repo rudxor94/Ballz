@@ -7,6 +7,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip breakSound;
     public AudioClip itemSound;
     public AudioClip nextSound;
+    public AudioClip btnSound;
 
     private AudioSource audioSource;
 
@@ -23,6 +24,7 @@ public class AudioManager : MonoBehaviour
             case "Break": audioSource.PlayOneShot(breakSound); break;
             case "Item": audioSource.PlayOneShot(itemSound); break;
             case "Next": audioSource.PlayOneShot(nextSound); break;
+            case "Btn": audioSource.PlayOneShot(btnSound); break;
         }
     }
 }
