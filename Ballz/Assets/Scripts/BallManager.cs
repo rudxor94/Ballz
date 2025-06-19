@@ -207,7 +207,7 @@ public class BallManager : MonoBehaviour
         var dir = (to - from).normalized;
         var distance = Vector2.Distance(from, to);
 
-        RaycastHit2D hit = Physics2D.CircleCast(from2D, ballRadius, dir, distance, layerMask);
+        RaycastHit2D hit = Physics2D.CircleCast(from2D, ballRadius, dir, 100f, layerMask);
         if (hit.collider != null)
         {
             to = hit.point;
@@ -219,8 +219,8 @@ public class BallManager : MonoBehaviour
 
         aimLine.enabled = dir.y >= 0.05f;
         aimLine.positionCount = 2;
-        aimLine.SetPosition(0, from);
-        aimLine.SetPosition(1, to);
+        aimLine.SetPosition(0, to);
+        aimLine.SetPosition(1, from);
     }
 
     private void HideAimLine()
