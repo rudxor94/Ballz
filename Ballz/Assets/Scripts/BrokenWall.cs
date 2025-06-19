@@ -93,6 +93,7 @@ public class BrokenWall : MonoBehaviour
         countColors.Sort((a, b) => a.threshold.CompareTo(b.threshold));
 
         Color result = countColors[0].color; // 기본값: 가장 낮은 색
+        var colorCount = initialCount;
 
         for (int i = countColors.Count - 1; i > 0; i--)
         {
@@ -106,12 +107,13 @@ public class BrokenWall : MonoBehaviour
                     result = upper.color; // 초기값이 구간 이상이고 아직 안 맞았으면 유지
                     break;
                 }
-                else if (initialCount > count && count <= upper.threshold && count > lower.threshold)
+                else if (initialCount > count && count > lower.threshold)
                 {
-                    float t = Mathf.InverseLerp(upper.threshold - 1, lower.threshold, count);
+                    float t = Mathf.InverseLerp(colorCount, lower.threshold, count);
                     result = Color.Lerp(upper.color, lower.color, t);
                     break;
                 }
+                colorCount -= (upper.threshold - lower.threshold);
             }
         }
 
