@@ -26,6 +26,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3814ff1d804a366498e8818d0fcb5123
+    m_Address: Effect/Broken
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5271ad46bae07564489f2fcdad6b5669
     m_Address: Sound/Next
     m_ReadOnly: 0

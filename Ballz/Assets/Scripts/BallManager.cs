@@ -40,7 +40,7 @@ public class BallManager : MonoBehaviour
         ballView.transform.position = initPosition;
         foreach (var ball in activeBalls)
         {
-            ResourceManager.Instance.DestroyResource("Ball", ball.gameObject);
+            ResourceManager.Instance.DestroyResource("Prefab/Ball", ball.gameObject);
         }
         activeBalls.Clear();
 

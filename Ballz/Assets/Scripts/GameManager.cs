@@ -57,7 +57,8 @@ public class GameManager : MonoBehaviour
                     {
                         if (wall.IsBroken())
                         {
-                            ResourceManager.Instance.DestroyResource("BrokenWall", wall.gameObject);
+                            ResourceManager.Instance.DestroyResource("Prefab/BrokenWall", wall.gameObject);
+                            EffectManager.Instance.PlayEffect("Broken", wall.transform.position);
                             unusedWall.Add(wall);
                         }
                     }
@@ -73,7 +74,7 @@ public class GameManager : MonoBehaviour
                         if (item.IsEat())
                         {
                             CreateAddBall(item.transform.position);
-                            ResourceManager.Instance.DestroyResource("Item", item.gameObject);
+                            ResourceManager.Instance.DestroyResource("Prefab/Item", item.gameObject);
                             unusedItem.Add(item);
                         }
                     }
@@ -151,12 +152,12 @@ public class GameManager : MonoBehaviour
     {
         foreach (var wall in usedWall)
         {
-            ResourceManager.Instance.DestroyResource("BrokenWall", wall.gameObject);
+            ResourceManager.Instance.DestroyResource("Prefab/BrokenWall", wall.gameObject);
         }
 
         foreach (var item in usedItem)
         {
-            ResourceManager.Instance.DestroyResource("Item", item.gameObject);
+            ResourceManager.Instance.DestroyResource("Prefab/Item", item.gameObject);
         }
 
         usedWall.Clear();
@@ -168,7 +169,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (var addBall in usedAddBall)
         {
-            ResourceManager.Instance.DestroyResource("AddBall", addBall.gameObject);
+            ResourceManager.Instance.DestroyResource("Prefab/AddBall", addBall.gameObject);
         }
         usedAddBall.Clear();
 
