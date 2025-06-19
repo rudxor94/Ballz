@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class BallManager : MonoBehaviour
 {
@@ -59,7 +60,7 @@ public class BallManager : MonoBehaviour
             if (GameManager.Instance.state != GameManager.State.Play) return;
 
             // 마우스 또는 터치 시작
-            if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
+            if (Mouse.current.leftButton.wasPressedThisFrame || (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame))
             {
                 if (!IsPointerOverUI())
                 {
@@ -68,18 +69,17 @@ public class BallManager : MonoBehaviour
             }
 
             // 드래그 중 (조준선 그리기)
-            if (isAiming && (Input.GetMouseButton(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)))
+            if (isAiming && (Mouse.current.leftButton.isPressed || (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)))
             {
                 lineEndPos = GetInputWorldPosition();
                 UpdateAimLine(ballView.transform.position, lineEndPos);
             }
 
             // 손을 뗐을 때
-            if (isAiming && (Input.GetMouseButtonUp(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)))
+            if (isAiming && (Mouse.current.leftButton.wasReleasedThisFrame || (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasReleasedThisFrame)))
             {
-                Vector3 inputPos = GetInputWorldPosition();
+                Vector3 inputPos = GetInputWorldPosition(true);
                 var shootDir = (inputPos - ballView.transform.position).normalized;
-
                 if (shootDir.y >= 0.05f) // 위 방향 제한
                 {
                     ShootAllBalls(shootDir);
@@ -168,35 +168,35 @@ public class BallManager : MonoBehaviour
         ++addBall;
     }
 
-    private Vector3 GetInputWorldPosition()
+    private Vector3 GetInputWorldPosition(bool allowLastTouch = false)
     {
-        var screenPos = Vector3.zero;
+        Vector2 screenPos = Vector2.zero;
 
-#if UNITY_EDITOR || UNITY_STANDALONE
-        screenPos = Input.mousePosition;
-#elif UNITY_ANDROID || UNITY_IOS
-    if (Input.touchCount > 0)
-        screenPos = Input.GetTouch(0).position;
-    else
-        return Vector3.zero;
-#else
-    screenPos = Input.mousePosition; // 기본 fallback
-#endif
+        if (Touchscreen.current != null)
+        {
+            var touch = Touchscreen.current.primaryTouch;
+            if (touch.press.isPressed || allowLastTouch)
+            {
+                screenPos = touch.position.ReadValue();
+            }
+        }
+        else if (Mouse.current != null)
+        {
+            screenPos = Mouse.current.position.ReadValue();
+        }
 
-        screenPos.z = 0f;
-        return Camera.main.ScreenToWorldPoint(screenPos);
+        return Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 0f));
     }
 
     private bool IsPointerOverUI()
     {
-#if UNITY_ANDROID || UNITY_IOS
-        if (Input.touchCount > 0)
-            return EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId);
-        else
-            return false;
-#else
+        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
+        {
+            int fingerId = Touchscreen.current.primaryTouch.touchId.ReadValue();
+            return EventSystem.current.IsPointerOverGameObject(fingerId);
+        }
+
         return EventSystem.current.IsPointerOverGameObject();
-#endif
     }
 
     private void UpdateAimLine(Vector3 from, Vector3 to)
