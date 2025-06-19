@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     private List<BrokenWall> usedWall = new List<BrokenWall>();
     private List<Item> usedItem = new List<Item>();
-    private List<GameObject> usedAddBall = new List<GameObject>();
+    private List<AddBall> usedAddBall = new List<AddBall>();
     private int score = 0;
     private State beforeState;
     private int addItemRatio;
@@ -170,13 +170,19 @@ public class GameManager : MonoBehaviour
     {
         foreach (var addBall in usedAddBall)
         {
-            ResourceManager.Instance.DestroyResource("Prefab/AddBall", addBall.gameObject);
+            addBall.TurnStartMove();
         }
         usedAddBall.Clear();
 
         AudioManager.Instance.PlaySound("Next");
 
         CreateLine();
+    }
+
+    public void OnAddBallArrived(AddBall addBall)
+    {
+        usedAddBall.Remove(addBall);
+        ResourceManager.Instance.DestroyResource("Prefab/AddBall", addBall.gameObject);
     }
 
     public void CreateLine()
@@ -241,7 +247,7 @@ public class GameManager : MonoBehaviour
         newAddBall.SetActive(true);
         newAddBall.transform.position = position;
 
-        usedAddBall.Add(newAddBall);
+        usedAddBall.Add(newAddBall.GetComponent<AddBall>());
     }
 
     public void MoveLine()
