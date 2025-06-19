@@ -17,6 +17,7 @@ public class BrokenWall : MonoBehaviour
     private int x;
     private int y;
     private int count;
+    private int initialCount;
     private bool moved;
     private SpriteRenderer spriteRenderer;
 
@@ -31,6 +32,7 @@ public class BrokenWall : MonoBehaviour
         this.y = y;
         transform.position = new Vector3(x - 4, y - 4, 0);
         this.count = count;
+        initialCount = count;
         text.text = count.ToString();
         UpdateTargetColor();
     }
@@ -90,18 +92,26 @@ public class BrokenWall : MonoBehaviour
         // 정렬 보장
         countColors.Sort((a, b) => a.threshold.CompareTo(b.threshold));
 
-        Color result = countColors[countColors.Count - 1].color; // default: 제일 높은 값
+        Color result = countColors[0].color; // 기본값: 가장 낮은 색
 
-        for (int i = 0; i < countColors.Count - 1; i++)
+        for (int i = countColors.Count - 1; i > 0; i--)
         {
-            var low = countColors[i];
-            var high = countColors[i + 1];
+            var lower = countColors[i - 1];
+            var upper = countColors[i];
 
-            if (count <= high.threshold)
+            if (initialCount >= upper.threshold)
             {
-                float t = Mathf.InverseLerp(low.threshold, high.threshold, count);
-                result = Color.Lerp(low.color, high.color, t);
-                break;
+                if (initialCount == count)
+                {
+                    result = upper.color; // 초기값이 구간 이상이고 아직 안 맞았으면 유지
+                    break;
+                }
+                else if (initialCount > count && count <= upper.threshold && count > lower.threshold)
+                {
+                    float t = Mathf.InverseLerp(upper.threshold - 1, lower.threshold, count);
+                    result = Color.Lerp(upper.color, lower.color, t);
+                    break;
+                }
             }
         }
 

@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: -6184594567989575862}
   - component: {fileID: -5829879793812939303}
   m_Layer: 8
-  m_Name: Tile
+  m_Name: BrokenWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -282,15 +282,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 465105029464992248}
   countColors:
-  - threshold: 5
-    color: {r: 0.7264151, g: 0.7264151, b: 0, a: 1}
-  - threshold: 15
+  - threshold: 1
+    color: {r: 0.9245283, g: 0.9245283, b: 0.15263437, a: 1}
+  - threshold: 6
     color: {r: 0.14848332, g: 0.6698113, b: 0, a: 1}
-  - threshold: 40
+  - threshold: 16
     color: {r: 0.6415094, g: 0.060754593, b: 0, a: 1}
-  - threshold: 100
+  - threshold: 41
     color: {r: 0, g: 0.023475327, b: 0.6226415, a: 1}
-  - threshold: 300
+  - threshold: 101
     color: {r: 0, g: 0.62352943, b: 0.41907313, a: 1}
 --- !u!61 &-5829879793812939303
 BoxCollider2D:
