@@ -131,7 +131,7 @@ public class BallManager : MonoBehaviour
         {
             if (i >= activeBalls.Count)
             {
-                var newBall = ResourceManager.Instance.GetResource("Ball");
+                var newBall = ResourceManager.Instance.GetResource("Prefab/Ball");
                 activeBalls.Add(newBall.GetComponent<Ball>());
             }
 

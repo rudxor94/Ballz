@@ -1633,10 +1633,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41cbd6d78ee1d8548bc23ec5153f15ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSound: {fileID: 8300000, guid: bd754c66e6ceb8e41bb519b28470dc1e, type: 3}
-  itemSound: {fileID: 8300000, guid: f575661279642ae4ebc7f4476a4b701d, type: 3}
-  nextSound: {fileID: 8300000, guid: 5271ad46bae07564489f2fcdad6b5669, type: 3}
-  btnSound: {fileID: 8300000, guid: 2401c344a882c3544b1ce763268c262e, type: 3}
 --- !u!1 &545341068
 GameObject:
   m_ObjectHideFlags: 0
@@ -2487,10 +2483,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unusedObject: {fileID: 2125267553}
-  brokenWallPrefab: {fileID: 4071387392599721068, guid: fc4898103b256c44fbd5bcf9bc4ee938, type: 3}
-  itemPrefab: {fileID: 8151785014682563648, guid: 09c51d7994522a242a2f9dd80a0ca2de, type: 3}
-  ballPrefab: {fileID: 7649238755727359892, guid: f87cef274ff56ff4599d514c6c6409fa, type: 3}
-  addBallPrefab: {fileID: 6381446405057712513, guid: 821cc909a25a9674f9ffa22bc9c48911, type: 3}
+  preloadCountPerPrefab: 1
+  preloadLabel: Preload
 --- !u!4 &978441343
 Transform:
   m_ObjectHideFlags: 0

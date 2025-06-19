@@ -1,30 +1,46 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
 
-    public AudioClip breakSound;
-    public AudioClip itemSound;
-    public AudioClip nextSound;
-    public AudioClip btnSound;
-
     private AudioSource audioSource;
+    private Dictionary<string, AudioClip> clipCache = new();
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+
+        DontDestroyOnLoad(gameObject);
         audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     public void PlaySound(string name)
     {
-        switch (name)
+        name = "Sound/" + name;
+        if (clipCache.TryGetValue(name, out var clip))
         {
-            case "Break": audioSource.PlayOneShot(breakSound); break;
-            case "Item": audioSource.PlayOneShot(itemSound); break;
-            case "Next": audioSource.PlayOneShot(nextSound); break;
-            case "Btn": audioSource.PlayOneShot(btnSound); break;
+            audioSource.PlayOneShot(clip);
+        }
+        else
+        {
+            Addressables.LoadAssetAsync<AudioClip>(name).Completed += handle =>
+            {
+                if (handle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    var loadedClip = handle.Result;
+                    clipCache[name] = loadedClip;
+                    audioSource.PlayOneShot(loadedClip);
+                }
+                else
+                {
+                    Debug.LogWarning($"[AudioManager] Failed to load sound: {name}");
+                }
+            };
         }
     }
 }

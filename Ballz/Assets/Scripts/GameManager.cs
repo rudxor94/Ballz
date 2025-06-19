@@ -212,8 +212,7 @@ public class GameManager : MonoBehaviour
 
     public void CreateBrokenWall(int x)
     {
-        GameObject newWall = ResourceManager.Instance.GetResource("BrokenWall");
-
+        var newWall = ResourceManager.Instance.GetResource("Prefab/BrokenWall");
         newWall.transform.parent = GameObject.Find("GameScreen").transform;
         newWall.SetActive(true);
         var brokenWall = newWall.GetComponent<BrokenWall>();
@@ -224,8 +223,7 @@ public class GameManager : MonoBehaviour
 
     public void CreateItem(int x)
     {
-        GameObject newItem = ResourceManager.Instance.GetResource("Item");
-
+        var newItem = ResourceManager.Instance.GetResource("Prefab/Item");
         newItem.transform.parent = GameObject.Find("GameScreen").transform;
         newItem.SetActive(true);
         var item = newItem.GetComponent<Item>();
@@ -236,8 +234,7 @@ public class GameManager : MonoBehaviour
 
     public void CreateAddBall(Vector3 position)
     {
-        GameObject newAddBall = ResourceManager.Instance.GetResource("AddBall");
-
+        var newAddBall = ResourceManager.Instance.GetResource("Prefab/AddBall");
         newAddBall.transform.parent = GameObject.Find("GameScreen").transform;
         newAddBall.SetActive(true);
         newAddBall.transform.position = position;

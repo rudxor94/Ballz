@@ -18,7 +18,8 @@ MonoBehaviour:
   - m_GUID: 09c51d7994522a242a2f9dd80a0ca2de
     m_Address: Prefab/Item
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Preload
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2401c344a882c3544b1ce763268c262e
     m_Address: Sound/Btn
@@ -38,7 +39,8 @@ MonoBehaviour:
   - m_GUID: 821cc909a25a9674f9ffa22bc9c48911
     m_Address: Prefab/AddBall
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Preload
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bd754c66e6ceb8e41bb519b28470dc1e
     m_Address: Sound/Break
@@ -53,12 +55,14 @@ MonoBehaviour:
   - m_GUID: f87cef274ff56ff4599d514c6c6409fa
     m_Address: Prefab/Ball
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Preload
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fc4898103b256c44fbd5bcf9bc4ee938
     m_Address: Prefab/BrokenWall
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Preload
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 6b8af04a2eb51684497415680022da60, type: 2}
