@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
                         {
                             CreateAddBall(item.transform.position);
                             ResourceManager.Instance.DestroyResource("Prefab/Item", item.gameObject);
+                            EffectManager.Instance.PlayEffect("GetItem", item.transform.position);
                             unusedItem.Add(item);
                         }
                     }
