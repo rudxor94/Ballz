@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
     private List<AddBall> usedAddBall = new List<AddBall>();
     private int score = 0;
     private State beforeState;
-    private int addItemRatio;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -117,7 +116,6 @@ public class GameManager : MonoBehaviour
         BallManager.Instance.Init();
         state = State.Play;
         Time.timeScale = 1;
-        addItemRatio = 40;
     }
 
     public void ToTitle()
@@ -187,32 +185,23 @@ public class GameManager : MonoBehaviour
 
     public void CreateLine()
     {
-        var wallCount = 0;
-        var itemCount = 0;
         ++score;
-        for (var i = 1; i <= 7; ++i)
-        {
-            if (wallCount < 6 && Random.Range(0, 100) <= 50)
-            {
-                CreateBrokenWall(i);
-                ++wallCount;
-            }
-            else if (i == 7 && wallCount == 0)
-            {
-                CreateBrokenWall(i);
-                ++wallCount;
-            }
-            else if (score > 1 && itemCount == 0 && Random.Range(0, 100) <= 30 + addItemRatio)
-            {
-                CreateItem(i);
-                ++itemCount;
-                addItemRatio = 0;
-            }
-        }
 
-        if (itemCount == 0)
+        var positions = new List<int> { 1, 2, 3, 4, 5, 6, 7 };
+
+        var index = Random.Range(0, positions.Count);
+        var itemPos = positions[index];
+        positions.RemoveAt(index);
+        CreateItem(itemPos);
+
+        var wallCount = Random.Range(2, 5);
+
+        for (var i = 1; i <= wallCount; ++i)
         {
-            addItemRatio += 10;
+            var wallIndex = Random.Range(0, positions.Count);
+            var wallPos = positions[wallIndex];
+            positions.RemoveAt(wallIndex);
+            CreateBrokenWall(wallPos);
         }
 
         MoveLine();
