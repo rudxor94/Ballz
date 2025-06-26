@@ -213,7 +213,7 @@ public class GameManager : MonoBehaviour
         newWall.transform.parent = GameObject.Find("GameScreen").transform;
         newWall.SetActive(true);
         var brokenWall = newWall.GetComponent<BrokenWall>();
-        brokenWall.Init(x, 8, score);
+        brokenWall.Init(x, 8, Random.Range(0, 10) < 2 ? score * 2 : score);
 
         usedWall.Add(brokenWall);
     }
