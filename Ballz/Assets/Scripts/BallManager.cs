@@ -12,6 +12,7 @@ public class BallManager : MonoBehaviour
     public GameObject ballView;
     public TextMeshPro ballViewText;
     public GameObject addBallText;
+    public GameObject fakeBall;
 
     public float ballShootDelay = 0.1f;
     public float ballRadius = 0.15f;
@@ -23,6 +24,7 @@ public class BallManager : MonoBehaviour
     private int totalBalls = 1;
     private int addBall = 0;
     private bool firstBallFinish = false;
+    private Vector3 firstBallPosition;
 
     private bool isAiming = false;
     private Vector3 lineEndPos;
@@ -101,6 +103,9 @@ public class BallManager : MonoBehaviour
             }
 
             shoot = false;
+            ballView.transform.position = firstBallPosition;
+            ballView.SetActive(true);
+            fakeBall.SetActive(false);
 
             if (addBall > 0)
             {
@@ -148,9 +153,10 @@ public class BallManager : MonoBehaviour
     {
         if (firstBallFinish) return;
 
-        ballView.transform.position = position;
-        ballView.SetActive(true);
         firstBallFinish = true;
+        firstBallPosition = position;
+        fakeBall.SetActive(true);
+        fakeBall.transform.position = firstBallPosition;
     }
 
     public bool IsShoot()
@@ -160,7 +166,7 @@ public class BallManager : MonoBehaviour
 
     public Vector3 GetBallViewPosition()
     {
-        return ballView.transform.position;
+        return shoot ? firstBallPosition : ballView.transform.position;
     }
 
     public void AddBall()
