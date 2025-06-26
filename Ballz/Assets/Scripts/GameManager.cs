@@ -189,10 +189,13 @@ public class GameManager : MonoBehaviour
 
         var positions = new List<int> { 1, 2, 3, 4, 5, 6, 7 };
 
-        var index = Random.Range(0, positions.Count);
-        var itemPos = positions[index];
-        positions.RemoveAt(index);
-        CreateItem(itemPos);
+        if (score > 1)
+        {
+            var itemIndex = Random.Range(0, positions.Count);
+            var itemPos = positions[itemIndex];
+            positions.RemoveAt(itemIndex);
+            CreateItem(itemPos);
+        }
 
         var wallCount = Random.Range(2, 5);
 
