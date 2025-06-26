@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     private List<Item> usedItem = new List<Item>();
     private List<AddBall> usedAddBall = new List<AddBall>();
     private int score = 0;
+    private float ballMoveTime = 0;
+    private bool fast = false;
     private State beforeState;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -51,6 +53,7 @@ public class GameManager : MonoBehaviour
 
             case State.BallMove:
                 {
+                    ballMoveTime += Time.deltaTime;
                     var unusedWall = new List<BrokenWall>();
                     foreach (var wall in usedWall)
                     {
@@ -109,6 +112,17 @@ public class GameManager : MonoBehaviour
         return score;
     }
 
+    public bool ShowFast()
+    {
+        return fast == false && ballMoveTime >= 5;
+    }
+
+    public void SetFast()
+    {
+        fast = true;
+        Time.timeScale = 3;
+    }
+
     public void GameStart()
     {
         ClearGame();
@@ -134,7 +148,7 @@ public class GameManager : MonoBehaviour
     public void Continue()
     {
         state = beforeState;
-        Time.timeScale = 1;
+        Time.timeScale = fast ? 3 : 1;
     }
 
     public void GameOver()
@@ -166,6 +180,10 @@ public class GameManager : MonoBehaviour
 
     public void TurnStart()
     {
+        Time.timeScale = 1;
+        ballMoveTime = 0;
+        fast = false;
+
         foreach (var addBall in usedAddBall)
         {
             addBall.TurnStartMove();

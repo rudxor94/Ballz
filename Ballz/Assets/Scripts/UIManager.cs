@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
     public GameObject menuUI;
     public GameObject playUI;
     public GameObject endUI;
+    public GameObject fastUI;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI highScoreText;
     public TextMeshProUGUI endScoreText;
@@ -97,6 +98,8 @@ public class UIManager : MonoBehaviour
                     highScoreText.ForceMeshUpdate(true);
                 }
             }
+
+            fastUI.SetActive(GameManager.Instance.ShowFast());
         }
     }
 }
