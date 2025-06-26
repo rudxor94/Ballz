@@ -6,6 +6,7 @@ public class Ball : MonoBehaviour
     private Rigidbody2D rb;
     private bool moved = false;
     private Vector2 lastVelocity;
+    private bool alreadyCollision;
 
     private void Awake()
     {
@@ -30,6 +31,7 @@ public class Ball : MonoBehaviour
     private void FixedUpdate()
     {
         lastVelocity = rb.linearVelocity;
+        alreadyCollision = false;
     }
 
     public void ShootBall(Vector2 direction)
@@ -65,11 +67,17 @@ public class Ball : MonoBehaviour
             return;
         }
 
+        if (alreadyCollision)
+        {
+            rb.linearVelocity = lastVelocity;
+            return;
+        }
+
         // 반사 벡터 계산
         Vector2 normal = collision.contacts[0].normal;
         Vector2 reflected = Vector2.Reflect(lastVelocity, normal).normalized;
 
-        float minAngleFromHorizontal = 10f; // 최소 10도 이상 위로 튕기게
+        float minAngleFromHorizontal = 1f; // 최소 1도 이상 위로 튕기게
 
         // reflected 벡터의 각도 확인
         float angle = Vector2.Angle(reflected, Vector2.right); // 0~180도 사이
@@ -84,6 +92,7 @@ public class Ball : MonoBehaviour
 
         rb.linearVelocity = reflected * moveSpeed;
         lastVelocity = rb.linearVelocity;
+        alreadyCollision = true;
     }
 
     public bool IsMoved()

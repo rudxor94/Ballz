@@ -82,7 +82,7 @@ public class BallManager : MonoBehaviour
             {
                 Vector3 inputPos = GetInputWorldPosition(true);
                 var shootDir = (inputPos - ballView.transform.position).normalized;
-                if (shootDir.y >= 0.05f) // 위 방향 제한
+                if (shootDir.y >= 0.02f) // 위 방향 제한
                 {
                     ShootAllBalls(shootDir);
                     shoot = true;
@@ -223,7 +223,7 @@ public class BallManager : MonoBehaviour
         from.z = 0;
         to.z = 0;
 
-        aimLine.enabled = dir.y >= 0.05f;
+        aimLine.enabled = dir.y >= 0.02f;
         aimLine.positionCount = 2;
         aimLine.SetPosition(0, to);
         aimLine.SetPosition(1, from);
