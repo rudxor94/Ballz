@@ -6,7 +6,6 @@ public class Ball : MonoBehaviour
     private Rigidbody2D rb;
     private bool moved = false;
     private Vector2 lastVelocity;
-    private bool alreadyCollision;
 
     private void Awake()
     {
@@ -35,7 +34,6 @@ public class Ball : MonoBehaviour
     private void FixedUpdate()
     {
         lastVelocity = rb.linearVelocity;
-        alreadyCollision = false;
     }
 
     public void ShootBall(Vector2 direction)

@@ -15,8 +15,6 @@ public class EffectManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
-
-        DontDestroyOnLoad(gameObject);
     }
 
     public void PlayEffect(string key, Vector3 position)
