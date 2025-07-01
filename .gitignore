@@ -11,3 +11,8 @@ Ballz/.vsconfig
 Ballz/Ballz.zip
 Ballz/Ballz.apk
 /Ballz/Ballz_BurstDebugInformation_DoNotShip
+Ballz/Assembly-CSharp.csproj
+
+Ballz/Assets/AddressableAssetsData/*/*.bin
+Ballz/Assets/AddressableAssetsData/*/*.hash
+Ballz/Assets/AddressableAssetsData/*/*.bundle
