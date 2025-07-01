@@ -62,7 +62,7 @@ public class BallManager : MonoBehaviour
             if (GameManager.Instance.state != GameManager.State.Play) return;
 
             // 마우스 또는 터치 시작
-            if (Mouse.current.leftButton.wasPressedThisFrame || (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame))
+            if (Pointer.current != null && Pointer.current.press.wasPressedThisFrame)
             {
                 if (!IsPointerOverUI())
                 {
@@ -71,18 +71,19 @@ public class BallManager : MonoBehaviour
             }
 
             // 드래그 중 (조준선 그리기)
-            if (isAiming && (Mouse.current.leftButton.isPressed || (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)))
+            if (isAiming && Pointer.current != null && Pointer.current.press.isPressed)
             {
                 lineEndPos = GetInputWorldPosition();
                 UpdateAimLine(ballView.transform.position, lineEndPos);
             }
 
             // 손을 뗐을 때
-            if (isAiming && (Mouse.current.leftButton.wasReleasedThisFrame || (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasReleasedThisFrame)))
+            if (isAiming && Pointer.current != null && Pointer.current.press.wasReleasedThisFrame)
             {
                 Vector3 inputPos = GetInputWorldPosition(true);
                 var shootDir = (inputPos - ballView.transform.position).normalized;
-                if (shootDir.y >= 0.02f) // 위 방향 제한
+
+                if (shootDir.y >= 0.02f)
                 {
                     ShootAllBalls(shootDir);
                     shoot = true;
@@ -176,33 +177,29 @@ public class BallManager : MonoBehaviour
 
     private Vector3 GetInputWorldPosition(bool allowLastTouch = false)
     {
-        Vector2 screenPos = Vector2.zero;
-
-        if (Touchscreen.current != null)
+        if (Pointer.current != null)
         {
-            var touch = Touchscreen.current.primaryTouch;
-            if (touch.press.isPressed || allowLastTouch)
-            {
-                screenPos = touch.position.ReadValue();
-            }
-        }
-        else if (Mouse.current != null)
-        {
-            screenPos = Mouse.current.position.ReadValue();
+            Vector2 screenPos = Pointer.current.position.ReadValue();
+            return Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 0f));
         }
 
-        return Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 0f));
+        return Vector3.zero;
     }
 
     private bool IsPointerOverUI()
     {
-        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
-        {
-            int fingerId = Touchscreen.current.primaryTouch.touchId.ReadValue();
-            return EventSystem.current.IsPointerOverGameObject(fingerId);
-        }
+#if UNITY_WEBGL
+        // WebGL에서는 Touchscreen 없을 수도 있으니 Pointer로 체크
+        return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+#else
+    if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
+    {
+        int fingerId = Touchscreen.current.primaryTouch.touchId.ReadValue();
+        return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject(fingerId);
+    }
 
-        return EventSystem.current.IsPointerOverGameObject();
+    return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+#endif
     }
 
     private void UpdateAimLine(Vector3 from, Vector3 to)
