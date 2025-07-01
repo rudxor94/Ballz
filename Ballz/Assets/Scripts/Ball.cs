@@ -63,15 +63,15 @@ public class Ball : MonoBehaviour
             return;
         }
 
+        var normal = collision.contacts[0].normal;
         var newVelocity = rb.linearVelocity.normalized;
         float minAngle = 1f;
         float angle = Vector2.Angle(newVelocity, Vector2.right);
 
         if (angle < minAngle || angle > 180 - minAngle)
         {
-            // 너무 수평이면 Y 성분 살짝 추가
             newVelocity.y = Mathf.Sign(newVelocity.y) * Mathf.Tan(minAngle * Mathf.Deg2Rad);
-            rb.linearVelocity = newVelocity.normalized * moveSpeed;
+            rb.linearVelocity = newVelocity * moveSpeed;
         }
     }
 
