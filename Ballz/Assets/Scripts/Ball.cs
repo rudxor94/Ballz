@@ -19,8 +19,12 @@ public class Ball : MonoBehaviour
     {
         if (moved == false)
         {
+            var ballPosition = transform.position;
             var position = BallManager.Instance.GetBallViewPosition();
-            transform.position = Vector3.MoveTowards(transform.position, position, moveSpeed * Time.deltaTime);
+            ballPosition.y = position.y;
+            ballPosition = Vector3.MoveTowards(ballPosition, position, moveSpeed * Time.deltaTime);
+            transform.position = ballPosition;
+
             if ((transform.position - position).magnitude < 0.1f)
             {
                 gameObject.SetActive(false);
@@ -54,12 +58,6 @@ public class Ball : MonoBehaviour
             return;
         }
 
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ball"))
-        {
-            rb.linearVelocity = lastVelocity;
-            return;
-        }
-
         if (collision.gameObject.layer == LayerMask.NameToLayer("Item"))
         {
             AudioManager.Instance.PlaySound("Item");
@@ -67,32 +65,16 @@ public class Ball : MonoBehaviour
             return;
         }
 
-        if (alreadyCollision)
+        var newVelocity = rb.linearVelocity.normalized;
+        float minAngle = 1f;
+        float angle = Vector2.Angle(newVelocity, Vector2.right);
+
+        if (angle < minAngle || angle > 180 - minAngle)
         {
-            rb.linearVelocity = lastVelocity;
-            return;
+            // 너무 수평이면 Y 성분 살짝 추가
+            newVelocity.y = Mathf.Sign(newVelocity.y) * Mathf.Tan(minAngle * Mathf.Deg2Rad);
+            rb.linearVelocity = newVelocity.normalized * moveSpeed;
         }
-
-        // 반사 벡터 계산
-        Vector2 normal = collision.contacts[0].normal;
-        Vector2 reflected = Vector2.Reflect(lastVelocity, normal).normalized;
-
-        float minAngleFromHorizontal = 1f; // 최소 1도 이상 위로 튕기게
-
-        // reflected 벡터의 각도 확인
-        float angle = Vector2.Angle(reflected, Vector2.right); // 0~180도 사이
-
-        // 만약 거의 수평(10도 이하)이면 강제로 보정
-        if (angle < minAngleFromHorizontal || angle > 180 - minAngleFromHorizontal)
-        {
-            // 보정 방향: y값 최소 확보 + 방향 유지
-            reflected.y = Mathf.Sign(reflected.y) * Mathf.Tan(minAngleFromHorizontal * Mathf.Deg2Rad);
-            reflected = reflected.normalized;
-        }
-
-        rb.linearVelocity = reflected * moveSpeed;
-        lastVelocity = rb.linearVelocity;
-        alreadyCollision = true;
     }
 
     public bool IsMoved()
