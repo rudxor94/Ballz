@@ -117,6 +117,11 @@ public class GameManager : MonoBehaviour
         return fast == false && ballMoveTime >= 5;
     }
 
+    public bool IsFast()
+    {
+        return fast;
+    }
+
     public void SetFast()
     {
         fast = true;
