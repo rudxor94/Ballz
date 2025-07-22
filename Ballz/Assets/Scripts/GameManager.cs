@@ -215,7 +215,8 @@ public class GameManager : MonoBehaviour
             CreateItem(itemPos);
         }
 
-        var wallCount = Random.Range(2, 5);
+        var minWall = Mathf.Min(2 + score / 50, 5);
+        var wallCount = Random.Range(minWall, 7);
 
         for (var i = 1; i <= wallCount; ++i)
         {
@@ -234,7 +235,8 @@ public class GameManager : MonoBehaviour
         newWall.transform.parent = GameObject.Find("GameScreen").transform;
         newWall.SetActive(true);
         var brokenWall = newWall.GetComponent<BrokenWall>();
-        brokenWall.Init(x, 8, Random.Range(0, 10) < 2 ? score * 2 : score);
+        var strongWallChance = Mathf.Min(2 + score / 100, 7);
+        brokenWall.Init(x, 8, Random.Range(0, 10) < strongWallChance ? score * 2 : score);
 
         usedWall.Add(brokenWall);
     }
