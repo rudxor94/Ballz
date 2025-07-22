@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     public GameObject endUI;
     public GameObject fastUI;
     public GameObject accelUI;
+    public GameObject warningUI;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI highScoreText;
     public TextMeshProUGUI endScoreText;
@@ -102,6 +103,7 @@ public class UIManager : MonoBehaviour
 
             fastUI.SetActive(GameManager.Instance.ShowFast());
             accelUI.SetActive(GameManager.Instance.IsFast());
+            warningUI.SetActive(state == GameManager.State.Play && GameManager.Instance.IsWarning());
         }
     }
 }

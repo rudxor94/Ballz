@@ -13,6 +13,7 @@ public class BrokenWall : MonoBehaviour
 {
     public TextMeshPro text;
     public List<CountColor> countColors = new();
+    public bool warning = false;
 
     private int x;
     private int y;
@@ -34,6 +35,7 @@ public class BrokenWall : MonoBehaviour
         this.count = count;
         initialCount = count;
         text.text = count.ToString();
+        warning = false;
         UpdateTargetColor();
     }
 
@@ -65,6 +67,8 @@ public class BrokenWall : MonoBehaviour
     {
         --y;
         moved = true;
+
+        warning = y <= 1;
     }
 
     public void OnCollisionEnter2D(Collision2D collision)

@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     private int score = 0;
     private float ballMoveTime = 0;
     private bool fast = false;
+    private bool warning = false;
     private State beforeState;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -120,6 +121,11 @@ public class GameManager : MonoBehaviour
     public bool IsFast()
     {
         return fast;
+    }
+
+    public bool IsWarning()
+    {
+        return warning;
     }
 
     public void SetFast()
@@ -269,9 +275,15 @@ public class GameManager : MonoBehaviour
 
     public void MoveLine()
     {
+        warning = false;
         foreach (var wall in usedWall)
         {
-            wall.GetComponent<BrokenWall>().MoveWall();
+            var brokenWall = wall.GetComponent<BrokenWall>();
+            brokenWall.MoveWall();
+            if (brokenWall.warning)
+            {
+                warning = true;
+            }
         }
 
         foreach (var wall in usedItem)
